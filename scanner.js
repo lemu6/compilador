@@ -1,4 +1,4 @@
-const keywords = ["let", "const", "function", "if", "else", "while", "for", "return", "true", "false", "null", "undefined", "print", "console", "log", "prompt", "parseInt", "parseFloat", "typeof"];
+const keywords = ["let", "const", "function", "if", "else", "while", "for", "return", "true", "false", "null", "undefined", "print", "console", "prompt", "parseInt", "parseFloat", "typeof"];
 const tokenPatterns = [
   {type: "KEYWORD", regex: new RegExp("^(" + keywords.join("|") + ")\\b")},
   {type: "NUMBER", regex: /^[0-9]+(\.[0-9]+)?/},
@@ -15,7 +15,6 @@ function tokenize(input) {
   let line = 1;
 
   while (remaining.length > 0) {
-    // Para cada linha, controle o número de linha para mensagem de erro
     if (remaining.startsWith("\n")) {
       line++;
       remaining = remaining.slice(1);

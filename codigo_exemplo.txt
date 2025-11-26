@@ -1,5 +1,6 @@
-let nome = "João";
-const idade = 20;
+let idade = 20;
+const nome = "Ana";
+idade = idade + 5;
 if (idade > 18) {
   print("Maior de idade");
 }
