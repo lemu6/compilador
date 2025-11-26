@@ -61,5 +61,6 @@ Análise semântica: tipos, uso correto de nomes, proibição de erros conforme 
 Mensagens detalhadas de erro (linha e descrição).
 
 Autoria
-Feito por: Lemuel Cavalcante – [20209063994]
+
+Feito por: Lemuel Cavalcante – 20209063994
 Disciplina: Compiladores – UFPI – 2025.2
