@@ -69,6 +69,7 @@ idade = 15; // Erro: não pode reatribuir constante
 ## Autoria
 
 Feito por: **Lemuel Cavalcante – 20209063994**
-Feito por: **Matheus Henrique – 20199042831**
+
+ **Matheus Henrique – 20199042831**
 
 Disciplina: **Compiladores – UFPI – 2025.2**
