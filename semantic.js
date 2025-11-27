@@ -132,16 +132,17 @@ function analyzeSemantics(ast) {
           break;
 
         case "nativeCall":
-          if (!["print", "console", "prompt"].includes(cmd.name)) {
-            throw new Error(`Erro semântico: função nativa '${cmd.name}' não reconhecida (linha ${cmd.line})`);
+          if (
+            !["print", "console", "prompt", "parseInt", "parseFloat", "typeof"].includes(cmd.name)
+          ) {
+            throw new Error(
+              `Erro semântico: função nativa '${cmd.name}' não reconhecida (linha ${cmd.line})`
+            );
           }
           // Opcional: validar argumentos
           cmd.args.forEach(analyzeExpression);
           break;
 
-        default:
-          // Pode expandir para outros tipos
-          break;
       }
     }
   }

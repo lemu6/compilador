@@ -8,7 +8,10 @@ function Parser(tokens) {
   function consume(type, value = null) {
     const token = tokens[current];
     if (!token || token.type !== type || (value !== null && token.value !== value)) {
-      throw new Error(`Erro de sintaxe na linha ${token ? token.line : '?'}: esperado token do tipo '${type}'${value ? " com valor '" + value + "'" : ""}, mas encontrado '${token ? token.value : 'fim do arquivo'}'`);
+      throw new Error(
+        `Erro de sintaxe na linha ${token ? token.line : "?"}: esperado token do tipo '${type}'` +
+        `${value ? " com valor '" + value + "'" : ""}, mas encontrado '${token ? token.value : "fim do arquivo"}'`
+      );
     }
     current++;
     return token;
@@ -27,6 +30,7 @@ function Parser(tokens) {
   function declaracao() {
     let token = peek();
     if (!token) return null;
+
     if (token.type === "KEYWORD" && token.value === "let") {
       return varDecl();
     } else if (token.type === "KEYWORD" && token.value === "const") {
@@ -39,7 +43,12 @@ function Parser(tokens) {
       return whileStatement();
     } else if (token.type === "KEYWORD" && token.value === "for") {
       return forStatement();
-    } else if (token.type === "KEYWORD" && ["print", "console", "prompt"].includes(token.value)) {
+    } else if (token.type === "KEYWORD" && token.value === "return") {
+      return returnStatement();
+    } else if (
+      token.type === "KEYWORD" &&
+      ["print", "console", "prompt", "parseInt", "parseFloat", "typeof"].includes(token.value)
+    ) {
       return funcCall();
     } else if (token.type === "IDENTIFIER") {
       return assignment();
@@ -79,7 +88,7 @@ function Parser(tokens) {
     const nome = consume("IDENTIFIER");
     consume("PUNCTUATION", "(");
     const params = [];
-    if (peek().type === "IDENTIFIER") {
+    if (peek() && peek().type === "IDENTIFIER") {
       params.push(consume("IDENTIFIER").value);
       while (peek() && peek().type === "PUNCTUATION" && peek().value === ",") {
         consume("PUNCTUATION", ",");
@@ -129,11 +138,21 @@ function Parser(tokens) {
     return { type: "for", init, condition: cond, next, body, line: tkFor.line };
   }
 
+  function returnStatement() {
+    const tkRet = consume("KEYWORD", "return");
+    let value = null;
+    if (!(peek().type === "PUNCTUATION" && peek().value === ";")) {
+      value = expression();
+    }
+    consume("PUNCTUATION", ";");
+    return { type: "returnStmt", value, line: tkRet.line };
+  }
+
   function funcCall() {
     const fname = consume("KEYWORD");
     consume("PUNCTUATION", "(");
     let args = [];
-    if (peek().type !== "PUNCTUATION" || peek().value !== ")") {
+    if (!(peek().type === "PUNCTUATION" && peek().value === ")")) {
       args.push(expression());
       while (peek().type === "PUNCTUATION" && peek().value === ",") {
         consume("PUNCTUATION", ",");
@@ -155,31 +174,94 @@ function Parser(tokens) {
     return body;
   }
 
-  // Expressão adaptada para operações encadeadas:
+  // EXPRESSÕES
+
   function expression() {
-    let token = peek();
-    if (["STRING", "NUMBER", "IDENTIFIER"].includes(token.type)) {
-      let left = { type: token.type.toLowerCase(), value: token.value, line: token.line };
+    const token = peek();
+    if (!token) {
+      throw new Error("Expressão inválida no fim do arquivo");
+    }
+
+    // Literais number
+    if (token.type === "NUMBER") {
       current++;
+      let left = { type: "number", value: Number(token.value), line: token.line };
       while (peek() && peek().type === "OPERATOR") {
         const op = consume("OPERATOR");
         const right = expression();
         left = { type: "operation", operator: op.value, left, right, line: op.line };
       }
       return left;
-    } else if (token.type === "PUNCTUATION" && token.value === "[") {
-      return arrayExpression();
-    } else if (token.type === "PUNCTUATION" && token.value === "{") {
-      return objectExpression();
-    } else {
-      throw new Error(`Expressão inválida na linha ${token ? token.line : '?'}: ${token ? token.value : 'erro'}`);
     }
+
+    // Literais string
+    if (token.type === "STRING") {
+      current++;
+      let left = { type: "string", value: token.value, line: token.line };
+      while (peek() && peek().type === "OPERATOR") {
+        const op = consume("OPERATOR");
+        const right = expression();
+        left = { type: "operation", operator: op.value, left, right, line: op.line };
+      }
+      return left;
+    }
+
+    // boolean
+    if (token.type === "KEYWORD" && (token.value === "true" || token.value === "false")) {
+      current++;
+      let left = { type: "boolean", value: token.value === "true", line: token.line };
+      while (peek() && peek().type === "OPERATOR") {
+        const op = consume("OPERATOR");
+        const right = expression();
+        left = { type: "operation", operator: op.value, left, right, line: op.line };
+      }
+      return left;
+    }
+
+    // null
+    if (token.type === "KEYWORD" && token.value === "null") {
+      current++;
+      return { type: "null", value: null, line: token.line };
+    }
+
+    // undefined
+    if (token.type === "KEYWORD" && token.value === "undefined") {
+      current++;
+      return { type: "undefined", value: undefined, line: token.line };
+    }
+
+
+    // Identificador simples (sem acesso ainda)
+    if (token.type === "IDENTIFIER") {
+      current++;
+      let left = { type: "identifier", value: token.value, line: token.line };
+      while (peek() && peek().type === "OPERATOR") {
+        const op = consume("OPERATOR");
+        const right = expression();
+        left = { type: "operation", operator: op.value, left, right, line: op.line };
+      }
+      return left;
+    }
+
+    // Array literal
+    if (token.type === "PUNCTUATION" && token.value === "[") {
+      return arrayExpression();
+    }
+
+    // Object literal
+    if (token.type === "PUNCTUATION" && token.value === "{") {
+      return objectExpression();
+    }
+
+    throw new Error(
+      `Expressão inválida na linha ${token ? token.line : "?"}: ${token ? token.value : "erro"}`
+    );
   }
 
   function arrayExpression() {
     const tkArr = consume("PUNCTUATION", "[");
     let elements = [];
-    if (peek().type !== "PUNCTUATION" || peek().value !== "]") {
+    if (!(peek().type === "PUNCTUATION" && peek().value === "]")) {
       elements.push(expression());
       while (peek().type === "PUNCTUATION" && peek().value === ",") {
         consume("PUNCTUATION", ",");
@@ -187,7 +269,7 @@ function Parser(tokens) {
       }
     }
     consume("PUNCTUATION", "]");
-    return { type: "array", elements, line: tkArr.line };
+    return { type: "arrayLiteral", elements, line: tkArr.line };
   }
 
   function objectExpression() {
@@ -207,7 +289,7 @@ function Parser(tokens) {
       }
     }
     consume("PUNCTUATION", "}");
-    return { type: "object", fields, line: tkObj.line };
+    return { type: "objectLiteral", fields, line: tkObj.line };
   }
 
   // API externa
