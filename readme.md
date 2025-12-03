@@ -12,8 +12,37 @@ Compilador para JavaScript simplificado com:
 ## Arquitetura
 
 ```
-Código Fonte → Scanner → Parser → Semântico → CodeGen JS  → out.js  → node
-                                            → CodeGen Jasmin → out.j → jasmin → Main.class → java
+┌─────────────────────────────────────────────────────────────────────┐
+│                         FRONT-END                                   │
+├─────────────────────────────────────────────────────────────────────┤
+│  Código Fonte (.txt)                                                │
+│        ↓                                                            │
+│  ┌─────────────┐     ┌─────────────┐     ┌─────────────┐            │
+│  │  Scanner    │ →   │   Parser    │ →   │  Semântico  │            │
+│  │ (Léxico)    │     │ (Sintático) │     │  (Tipos)    │            │
+│  └─────────────┘     └─────────────┘     └─────────────┘            │
+│        ↓                   ↓                   ↓                    │
+│    [Tokens]            [AST]            [AST Validada]              │
+└─────────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│                         BACK-END                                    │
+├─────────────────────────────────────────────────────────────────────┤
+│  ┌──────────────────┐          ┌──────────────────┐                 │
+│  │   CodeGen JS     │          │  CodeGen Jasmin  │                 │
+│  │  (codegen.js)    │          │(codegen_jasmin.js)                 │
+│  └────────┬─────────┘          └────────┬─────────┘                 │
+│           ↓                             ↓                           │
+│     out/out.js                    out/out.j                         │
+│    (JavaScript)               (Código Jasmin)                       │
+│           ↓                             ↓                           │
+│     node out.js                 jasmin out.j                        │
+│    (Execução JS)                        ↓                           │
+│                                   Main.class                        │
+│                                         ↓                           │
+│                                   java Main                         │
+│                                 (Execução JVM)                      │
+└─────────────────────────────────────────────────────────────────────┘
 ```
 
 | Arquivo | Função |
