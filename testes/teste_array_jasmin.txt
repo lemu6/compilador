@@ -1,0 +1,13 @@
+// Teste de arrays no Jasmin
+let numeros = [10, 20, 30, 40, 50];
+
+print(numeros[0]);
+print(numeros[2]);
+print(numeros[4]);
+
+// Soma dos elementos
+let soma = 0;
+for (let i = 0; i < 5; i = i + 1) {
+    soma = soma + numeros[i];
+}
+print(soma);

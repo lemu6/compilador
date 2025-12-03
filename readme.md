@@ -312,6 +312,81 @@ print(x);       →    getstatic java/lang/System/out Ljava/io/PrintStream;
                      invokevirtual java/io/PrintStream/println(I)V
 ```
 
+### Funções de Usuário (`function`)
+
+**Declaração de função:**
+```
+Fonte:                              Jasmin:
+function dobro(x) {            →    .method public static dobro(I)I
+    return x * 2;                     .limit stack 100
+}                                     .limit locals 1
+                                      iload 0         ; parâmetro x
+                                      iconst_2
+                                      imul
+                                      ireturn
+                                    .end method
+```
+
+**Chamada de função:**
+```
+Fonte:                              Jasmin:
+let y = dobro(5);              →    bipush 5
+                                    invokestatic Main/dobro(I)I
+                                    istore 1        ; y no slot 1
+```
+
+**Assinaturas geradas:**
+| Parâmetros | Assinatura JVM |
+|------------|----------------|
+| 1 parâmetro | `(I)I` |
+| 2 parâmetros | `(II)I` |
+| 3 parâmetros | `(III)I` |
+
+### Arrays (`arrayLiteral`, `arrayAccess`)
+
+**Criação de array:**
+```
+Fonte:                              Jasmin:
+let arr = [10, 20, 30];        →    bipush 3        ; tamanho do array
+                                    newarray int    ; cria array de int
+                                    dup
+                                    bipush 0        ; índice 0
+                                    bipush 10       ; valor 10
+                                    iastore         ; arr[0] = 10
+                                    dup
+                                    bipush 1        ; índice 1
+                                    bipush 20       ; valor 20
+                                    iastore         ; arr[1] = 20
+                                    dup
+                                    bipush 2        ; índice 2
+                                    bipush 30       ; valor 30
+                                    iastore         ; arr[2] = 30
+                                    astore 1        ; arr no slot 1 (ref)
+```
+
+**Acesso a elemento:**
+```
+Fonte:                              Jasmin:
+print(arr[1]);                 →    getstatic java/lang/System/out ...
+                                    aload 1         ; carrega ref do array
+                                    iconst_1        ; índice 1
+                                    iaload          ; carrega arr[1]
+                                    invokevirtual .../println(I)V
+```
+
+### Strings (`string`)
+
+```
+Fonte:                              Jasmin:
+let msg = "Hello World";       →    ldc "Hello World"
+                                    astore 1        ; msg no slot 1 (ref)
+
+print(msg);                    →    getstatic java/lang/System/out ...
+                                    aload 1         ; carrega ref da string
+                                    invokevirtual java/lang/Object/toString()Ljava/lang/String;
+                                    invokevirtual .../println(Ljava/lang/String;)V
+```
+
 ### Constantes Numéricas
 
 | Valor | Instrução | Descrição |
@@ -580,7 +655,7 @@ Código Jasmin gerado em out/out.j
 | Objetos | `let obj = {x: 1, y: 2};` | ✅ |
 | Funções nativas | `print()`, `parseInt()`, `typeof()` | ✅ |
 
-### Back-end Jasmin (Subset Numérico)
+### Back-end Jasmin (Completo)
 
 | Construção | Status | Instrução JVM |
 |------------|--------|---------------|
@@ -593,9 +668,10 @@ Código Jasmin gerado em out/out.j
 | for | ✅ | Labels + saltos |
 | print | ✅ | `invokevirtual PrintStream/println` |
 | Booleanos | ✅ | `true`=1, `false`=0 |
-| Funções de usuário | ⚠️ | Não suportado |
-| Arrays/objetos | ⚠️ | Não suportado |
-| Strings | ⚠️ | Não suportado |
+| Funções de usuário | ✅ | `invokestatic Main/<func>(I...)I` |
+| Arrays (inteiros) | ✅ | `newarray int`, `iaload`, `iastore` |
+| Strings | ✅ | `ldc "..."`, `aload`, `astore` |
+| Objetos | ✅ | `java/util/HashMap` |
 
 ---
 
@@ -622,11 +698,34 @@ node index.js testes/teste_for.txt && node out/out.js
 # Teste de booleanos
 node index.js testes/teste_booleanos.txt && node out/out.js
 
-# Teste de funções (apenas JavaScript)
-node index.js testes/teste_funcao.txt && node out/out.js
+# Teste de funções (JavaScript e Jasmin)
+node index.js testes/teste_funcao_jasmin.txt && node out/out.js
 
-# Teste de arrays (apenas JavaScript)
-node index.js testes/teste_array.txt && node out/out.js
+# Teste de arrays (JavaScript e Jasmin)
+node index.js testes/teste_array_jasmin.txt && node out/out.js
+
+# Teste de strings (JavaScript e Jasmin)
+node index.js testes/teste_string_jasmin.txt && node out/out.js
+```
+
+### Testes com JVM (requer jasmin.jar)
+
+```bash
+# Compilar e executar na JVM
+node index.js testes/teste_funcao_jasmin.txt
+java -jar jasmin.jar out/out.j
+java Main
+# Saída esperada: 10, 30, 14
+
+node index.js testes/teste_array_jasmin.txt
+java -jar jasmin.jar out/out.j
+java Main
+# Saída esperada: 10, 30, 50, 150
+
+node index.js testes/teste_string_jasmin.txt
+java -jar jasmin.jar out/out.j
+java Main
+# Saída esperada: Hello World, Ola Jasmin!
 ```
 
 ---
