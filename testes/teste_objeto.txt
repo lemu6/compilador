@@ -1,0 +1,3 @@
+// Teste: objetos (só JS)
+let pessoa = {nome: "Ana", idade: 25};
+print(pessoa);

@@ -1,0 +1,20 @@
+// Teste: booleanos e operadores lógicos
+let verdadeiro = true;
+let falso = false;
+
+if (verdadeiro) {
+    print(1);
+}
+
+if (!falso) {
+    print(2);
+}
+
+let x = 10;
+if (x > 5 && x < 20) {
+    print(3);
+}
+
+if (x < 5 || x > 8) {
+    print(4);
+}
