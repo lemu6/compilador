@@ -1,12 +1,5 @@
-function soma(a, b) {
-  return (a + b);
+let soma = 0;
+for (let i = 1; (i <= 10); i = (i + 1)) {
+  soma = (soma + i);
 }
-let resultado = soma(3, 7);
-console.log(resultado);
-function fatorial(n) {
-  if ((n <= 1)) {
-    return 1;
-  }
-  return (n * fatorial((n - 1)));
-}
-console.log(fatorial(5));
+console.log(soma);

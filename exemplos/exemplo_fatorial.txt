@@ -1,0 +1,8 @@
+// Calcula fatorial de 5
+let n = 5;
+let fat = 1;
+while (n > 0) {
+    fat = fat * n;
+    n = n - 1;
+}
+print(fat);
