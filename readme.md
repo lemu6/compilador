@@ -61,8 +61,13 @@ Compilador para JavaScript simplificado com:
 # macOS
 brew install node openjdk
 
-# Ubuntu
+# Ubuntu/Debian
 sudo apt install nodejs npm default-jdk
+
+# Windows
+# 1. Node.js: baixe de https://nodejs.org/
+# 2. Java JDK: baixe de https://adoptium.net/
+# 3. jasmin.jar: baixe de http://jasmin.sourceforge.net/
 ```
 
 ## Como Usar
