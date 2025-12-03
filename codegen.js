@@ -46,9 +46,15 @@ function generateCommand(cmd) {
       const body = cmd.body.map(generateCommand).join("\n");
       return `for (${init}; ${cond}; ${next}) {\n${indent(body)}\n}`;
     }
+    case "functionCall":
+      return `${cmd.name}(${cmd.args.map(generateExpr).join(", ")});`;
+
+    case "returnStmt":
+      if (cmd.value) return `return ${generateExpr(cmd.value)};`;
+      return `return;`;
 
     case "nativeCall":
-      return generateNativeCall(cmd);
+      return generateNativeCall(cmd) + ";";
 
     case "userCall":
       return `${cmd.name}(${cmd.args.map(generateExpr).join(", ")});`;
@@ -63,13 +69,13 @@ function generateNativeCall(cmd) {
   switch (cmd.name) {
     case "print":
     case "console":
-      return `console.log(${args});`;
+      return `console.log(${args})`;
     case "prompt":
-      return `prompt(${args});`;
+      return `prompt(${args})`;
     case "parseInt":
-      return `parseInt(${args});`;
+      return `parseInt(${args})`;
     case "parseFloat":
-      return `parseFloat(${args});`;
+      return `parseFloat(${args})`;
     case "typeof":
       return `typeof ${args}`;
     default:
@@ -116,6 +122,15 @@ function generateExpr(expr) {
     case "functionCall":
       // parser: { type: "functionCall", name, args, line }
       return `${expr.name}(${expr.args.map(generateExpr).join(", ")})`;
+
+    case "nativeCall":
+      return generateNativeCall(expr);
+
+    case "unaryOperation":
+      return `(${expr.operator}${generateExpr(expr.operand)})`;
+
+    case "assignment":
+      return `${expr.name} = ${generateExpr(expr.value)}`;
 
     default:
       throw new Error(`codegen: expressão não suportada: ${expr.type}`);

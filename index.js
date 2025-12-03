@@ -2,7 +2,8 @@ const fs = require('fs');
 const { tokenize } = require('./scanner');
 const Parser = require('./parser');
 const { analyzeSemantics } = require('./semantic');
-const { generateProgram } = require('./codegen'); // back-end
+const { generateProgram } = require('./codegen'); // back-end JS
+const { generateJasminProgram } = require('./codegen_jasmin'); // back-end Jasmin
 
 // arquivo de entrada padrão
 const arquivo = process.argv[2] || 'codigo_teste_completo.txt';
@@ -36,9 +37,14 @@ try {
     fs.mkdirSync('./out');
   }
 
-  // grava o arquivo gerado
+  // grava o arquivo JS gerado
   fs.writeFileSync('./out/out.js', jsCode, 'utf8');
-  console.log('\nCódigo JS gerado em out/out.js\n');
+  console.log('\nCódigo JS gerado em out/out.js');
+
+  // BACK-END: geração de código Jasmin (JVM)
+  const jasminCode = generateJasminProgram(ast, 'Main');
+  fs.writeFileSync('./out/out.j', jasminCode, 'utf8');
+  console.log('Código Jasmin gerado em out/out.j\n');
 } catch (err) {
   console.error(`\n=== Erro ===\n${err.message}\n============\n`);
   process.exit(1);
