@@ -1,7 +1,0 @@
-let lista = [1, 2, 3];
-let numero = 10;
-let listString = ["s", "a"];
-
-print(numero)
-
-

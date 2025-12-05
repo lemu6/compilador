@@ -1,8 +1,0 @@
-// Teste: declarações e atribuições
-let x = 10;
-const y = 20;
-let z = x + y;
-print(z);
-
-x = 100;
-print(x);

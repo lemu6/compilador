@@ -1,4 +1,5 @@
-// codegen.js
+// codegen.js - Gerador de código JavaScript
+// Traduz AST de volta para JS executável
 
 function generateProgram(ast) {
   return ast.map(generateCommand).join("\n");
@@ -39,7 +40,6 @@ function generateCommand(cmd) {
     }
 
     case "for": {
-      // versão bem simples: gera init/cond/next como JS direto
       const init = cmd.init ? generateCommand(cmd.init).replace(/;$/, "") : "";
       const cond = generateExpr(cmd.condition);
       const next = generateExpr(cmd.next);

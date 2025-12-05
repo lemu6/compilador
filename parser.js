@@ -1,3 +1,6 @@
+// parser.js - Analisador sintático (recursive descent)
+// Precedência: or < and < eq < rel < add < mul < unary < primary
+
 function Parser(tokens) {
   let current = 0;
 
@@ -221,6 +224,8 @@ function Parser(tokens) {
     consume("PUNCTUATION", "}");
     return body;
   }
+
+  // --- Expressões (precedência crescente via chamadas recursivas) ---
 
   // Precedência (menor -> maior): || < && < == != < > >= < + - < * / % < ! < literals
   function expression() {

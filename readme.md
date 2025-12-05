@@ -202,29 +202,48 @@ node index.js testes/erro_indice_fora.txt && java -jar jasmin.jar out/out.j && j
 # Saída: Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: 100
 ```
 
-## Funcionalidades
-
-| Feature | JS | Jasmin |
-|---------|:--:|:------:|
-| Variáveis/Constantes | ✅ | ✅ |
-| Aritmética (+,-,*,/,%) | ✅ | ✅ |
-| Comparações | ✅ | ✅ |
-| Lógicos (&&, \|\|, !) | ✅ | ✅ |
-| if/else, while, for | ✅ | ✅ |
-| Funções de usuário | ✅ | ✅ |
-| Arrays | ✅ | ✅ |
-| Strings | ✅ | ✅ |
-| Objetos | ✅ | ✅ |
-| print() | ✅ | ✅ |
 
 ## Testes
 
 ```bash
-# Testes de funcionalidade
+# macOS/Linux
 node index.js testes/teste_variaveis.txt && node out/out.js
 node index.js testes/teste_funcao_jasmin.txt && java -jar jasmin.jar out/out.j && java Main
 node index.js testes/teste_array_jasmin.txt && java -jar jasmin.jar out/out.j && java Main
 ```
+
+```powershell
+# Windows (PowerShell)
+node index.js testes/teste_variaveis.txt; node out/out.js
+node index.js testes/teste_funcao_jasmin.txt; java -jar jasmin.jar out/out.j; java Main
+node index.js testes/teste_array_jasmin.txt; java -jar jasmin.jar out/out.j; java Main
+```
+
+## Conformidade com a Especificação
+
+O compilador segue a especificação da linguagem simplificada baseada em JavaScript, incluindo:
+
+- ✅ Todos os tipos de dados: `number`, `string`, `boolean`, `null`, `undefined`, `array`, `object`
+- ✅ Declaração de variáveis com `let` e constantes com `const`
+- ✅ Verificação de reatribuição de constantes
+- ✅ Escopo de bloco para variáveis
+- ✅ Declaração de funções com `function`, parâmetros e `return`
+- ✅ Estruturas de controle: `if/else`, `while`, `for`
+- ✅ Operadores aritméticos, de comparação, igualdade e lógicos
+- ✅ Precedência correta de operadores
+- ✅ Funções nativas: `print()`, `parseInt()`, `parseFloat()`, `typeof()`
+- ✅ Variáveis devem ser declaradas antes do uso
+
+### Extensões Implementadas
+
+Além da especificação, o compilador inclui algumas extensões úteis:
+
+| Extensão | Descrição |
+|----------|-----------|
+| `console()` | Sinônimo de `print()` para compatibilidade |
+| `prompt()` | Leitura de entrada do usuário |
+| Comentários `//` | Comentários de linha única |
+| Hoisting de funções | Funções podem ser chamadas antes de serem declaradas |
 
 ## Autoria
 

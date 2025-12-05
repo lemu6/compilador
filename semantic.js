@@ -1,6 +1,9 @@
+// semantic.js - Analisador semântico
+// Escopo via pilha, verifica declarações e tipos básicos
+
 function analyzeSemantics(ast) {
-  const scopeStack = [{}];
-  const functionTable = {};
+  const scopeStack = [{}];   // pilha de escopos (cada {} é um escopo)
+  const functionTable = {};  // tabela de funções do usuário
   
   // Hoisting: registra funções antes de analisar o resto
   for (let cmd of ast) {

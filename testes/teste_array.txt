@@ -1,8 +1,0 @@
-// Teste: arrays (só JS)
-let lista = [10, 20, 30];
-print(lista[0]);
-print(lista[1]);
-print(lista[2]);
-
-let soma = lista[0] + lista[1] + lista[2];
-print(soma);

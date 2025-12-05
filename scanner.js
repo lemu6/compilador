@@ -1,3 +1,6 @@
+// scanner.js - Analisador léxico
+// Ordem dos padrões importa: mais específicos primeiro
+
 const keywords = [
   "let", "const", "function", "if", "else", "while", "for", "return",
   "true", "false", "null", "undefined",

@@ -1,3 +1,6 @@
+// index.js - Ponto de entrada do compilador
+// Orquestra: léxico → sintático → semântico → codegen
+
 const fs = require('fs');
 const { tokenize } = require('./scanner');
 const Parser = require('./parser');

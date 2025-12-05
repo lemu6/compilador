@@ -1,5 +1,0 @@
-// Erro de runtime: divisão por zero
-let a = 10;
-let b = 0;
-let resultado = a / b;
-print(resultado);

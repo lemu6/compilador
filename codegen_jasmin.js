@@ -1,6 +1,5 @@
-// codegen_jasmin.js
-// Back-end que gera código Jasmin (JVM bytecode) a partir da AST
-// Versão completa com suporte a: funções, arrays, strings, objetos
+// codegen_jasmin.js - Gerador de bytecode JVM 
+// Gera código Jasmin (.j) a partir da AST
 
 function generateJasminProgram(ast, className = "Main") {
   // ========== FASE 1: Coletar funções do usuário ==========
