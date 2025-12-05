@@ -25,6 +25,15 @@ Compilador para JavaScript simplificado com:
 - **Back-end JS:** gera código JavaScript executável
 - **Back-end Jasmin:** gera bytecode JVM
 
+### Características Técnicas
+
+| Característica | Descrição |
+|----------------|-----------|
+| **Implementação** | Feita manualmente, sem uso de geradores (ANTLR, Flex, Bison, etc.) |
+| **Escopo** | Escopo de bloco (block scope) - variáveis visíveis apenas no bloco onde foram declaradas |
+| **Linguagem** | JavaScript (Node.js) |
+| **Análise** | Descendente recursiva (top-down) |
+
 ## Arquitetura
 
 ```
