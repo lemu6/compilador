@@ -1,0 +1,12 @@
+// Teste: expressões aritméticas
+let a = 10 + 5;
+let b = 20 - 3;
+let c = 4 * 3;
+let d = 15 / 3;
+let e = 10 % 3;
+
+print(a);
+print(b);
+print(c);
+print(d);
+print(e);

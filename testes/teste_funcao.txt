@@ -1,0 +1,13 @@
+// Teste: função do usuário
+function soma(a, b) {
+    return a + b;
+}
+
+function dobro(x) {
+    return x * 2;
+}
+
+let r1 = soma(3, 7);
+let r2 = dobro(5);
+print(r1);
+print(r2);

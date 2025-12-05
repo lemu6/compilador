@@ -1,0 +1,17 @@
+// Teste de funções de usuário no Jasmin
+function dobro(x) {
+    return x * 2;
+}
+
+function soma(a, b) {
+    return a + b;
+}
+
+let r1 = dobro(5);
+print(r1);
+
+let r2 = soma(10, 20);
+print(r2);
+
+let r3 = soma(dobro(3), 8);
+print(r3);

@@ -1,0 +1,4 @@
+// Erro de runtime: índice fora dos limites
+let arr = [10, 20, 30];
+let i = 100;
+print(arr[i]);

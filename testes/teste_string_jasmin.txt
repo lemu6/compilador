@@ -1,0 +1,6 @@
+// Teste de strings no Jasmin
+let nome = "Hello World";
+print(nome);
+
+let saudacao = "Ola Jasmin!";
+print(saudacao);

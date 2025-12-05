@@ -1,0 +1,19 @@
+// Teste: booleanos e operadores lógicos
+let verdadeiro = true;
+let falso = false;
+
+if (verdadeiro) {
+    print(1);
+}
+
+if (!falso) {
+    print(2);
+}
+
+if (verdadeiro && !falso) {
+    print(3);
+}
+
+if (falso || verdadeiro) {
+    print(4);
+}

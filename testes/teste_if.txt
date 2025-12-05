@@ -1,0 +1,18 @@
+// Teste: if/else
+let x = 10;
+
+if (x > 5) {
+    print(1);
+} else {
+    print(0);
+}
+
+if (x < 5) {
+    print(0);
+} else {
+    print(2);
+}
+
+if (x == 10) {
+    print(3);
+}
